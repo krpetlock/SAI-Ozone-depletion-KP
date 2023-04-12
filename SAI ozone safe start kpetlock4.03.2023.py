@@ -4,10 +4,6 @@ import param as prm
 
 # define initial chlorine (Cl) parameters
 
-clp = 3275     # total chlorine (Cl) in atmosphere in ppt as of 2023
-dcl = -8.23     # avg annual change in Cl (dissipation) in ppt/yr
-clr = clp/1e12   # total chlorine as ratio of molecules of Cl/molec air
-dclr = dcl/1e12   # avg annual change in Cl (dissipation) molec Cl/molec air
 t0 = 0.0           # years in future from 2023 (initially set to 0 for 2023)
 t1 = 2.0
 t2 = 7.0            
@@ -16,7 +12,7 @@ t4 = 17.0
 t5 = 22.0
 
 # remaining Cl (as ratio) in atm at time (t) yrs in future from 2023
-clrt = (clp + (dcl * t0))/1e12
+clrt = (prm.clp + (prm.dcl * t0))/1e12
 # -------------------------------------------------------------------------
 
 # density of air
@@ -40,9 +36,9 @@ ma20 = da20/kma  # molecules air / m^3 at 20 km
 
 # calculate density of Cl in g/cm^3
 
-mc20 = ma20 * clr  # Cl molec/m^3 at 20 km
+mc20 = ma20 * prm.clr  # Cl molec/m^3 at 20 km
 mc20c = mc20*10**-6  # Cl molec/cm^3 at 20km
-dmc20 = ma20 * dclr  # annual change in Cl molec/m^3 at 20km
+dmc20 = ma20 * prm.dclr  # annual change in Cl molec/m^3 at 20km
 dmc20c = (dmc20)*10**-6  # annual change in Cl molec/cm^3 at 20km
 
 mmcl = 35.45       # molar mass of Cl (g/mole)
@@ -116,9 +112,8 @@ print('')
 
 # # calculate ozone depletion resulting from addition of new aerosol in SAI 1K cooling scenario, variable start times
 
-tts = np.array([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22])  # yrs from 2023 until potential SAI start date
-sty = (2023,2024,2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,2041,2042,2043,2044,2045) # start year
-temp = np.array([192.0,192.5,193.0,193.5,194.0,194.5,195.0,195.5,196.0,196.5,197.0,197.5,198.0,198.5,199.0,199.5,200.0,200.5,201.0,201.5,202.0])  # temperature (K) in mid-stratosphere
+tts = np.linspace(1,prm.year_e-prm.year_b+1,prm.year_e-prm.year_b+1)
+sty = tts+prm.year_b-1
 
 dO23 = -((c+(dc * t0)) * daec)*k*2  #a ozone depletion from (R1), 2023 SAI start (tts= 0) for 1K surface cooling, g cm^-3 s^-1
 dO35 = -((c+(dc * t3)) * daec)*k*2  # ozone depletion from (R1), 2035 SAI start (tts=12) for 1K surface cooling, g cm^-3 s^-1
