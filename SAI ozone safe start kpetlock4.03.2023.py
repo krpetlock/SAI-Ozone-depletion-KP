@@ -71,6 +71,12 @@ vmsm = (vmsk)*10**9  # volume of mid stratosphere in m^3
 dela = 2.0e9 # total mass (kg) of additional aerosol needed per yr for 1K cooling, 2 Tg (until 2045), from CESM2-WACCM
 dae = dela/vmsm  # mass density of added aerosol in mid stratosphere, kg/m^3
 daec = (dae *1000) * 1e-6  # mass density of added aerosol in mid stratosphere, g/cm^3
+
+# calculate mass density from CESM values (ARISE), take year 2 as test
+
+dae_A2 = prm.dae_A[2]*da20 
+dae_A2 = dae_A2 * 1e-6 * 1e-6
+
 # -------------------------------------------------------------------------
 
 # calculate heterogeneous reaction rate for R1
