@@ -99,18 +99,23 @@ cgas = ((8*kb*te1)/(pi*m))**1/2  # mean molecular speed of gas (m/s?)
 print(cgas)
 sad = 8.6  # surface area density um^2 cm^-3 from Tilmes et al (2022) CESM2 data, multi-year average following initial 5 yr particle growth phase 
 k = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
-kh = 0.5*k
-k2 = 2*k
 
-# sadl = np.array([2.0,2.0,3.0,4.0,5.0,8.0,9.0,8.0,8.5,8.0,7.5,10.0,10.0,9.5,8.0,7.0,8.5,9.0,9.0,8.0,8.5,8.0,10.0]) # SAD data (SAI), Tilmes et al,(2022) for CESM2
+sadl = np.array([2.0,2.0,3.0,4.0,5.0,8.0,9.0,8.0,8.5,8.0,7.5,10.0,10.0,9.5,8.0,7.0,8.5,9.0,9.0,8.0,8.5,8.0,10.0]) # SAD data (SAI), Tilmes et al,(2022) for CESM2
 # sades = np.array([4.3,17.2,25.8,43.0,86.0])
-# sadh = 4.3
-# sad2 = 17.2 
-# sad3 = 25.8
-# sad5 = 43.0
-# sad10 = 86.0
+sadh = 4.3
+sad2 = 17.2 
+sad3 = 25.8
+sad5 = 43.0
+sad10 = 86.0
 # Note: SAD values, from source research study, for a 2020 start, (and for each year into SAI deployment) are applied here to later start dates, 
 # assuming conditions (such as temperature) have not changed significantly since 2020 to affect SAD values.
+
+k  = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
+kh = 0.25*ut*cgas*sadh
+k2 = 0.25*ut*cgas*sad2
+k3 = 0.25*ut*cgas*sad3
+k5 = 0.25*ut*cgas*sad5
+k10= 0.25*ut*cgas*sad10
 
 # def ksal(x,y = cgas):
 #    return (0.25*ut*y*x)
