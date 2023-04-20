@@ -54,16 +54,16 @@ dc = dc20
 # dclgc = (dmc20c * gmcl)  # annual change in Cl in g/cm^3 
 # ------------------------------------------------------------------------
 
-# calculate total volume of mid stratosphere, from 18-25 km altitude
+# calculate volume of Antarctic mid stratosphere, from 18-25 km altitude
 
 re = (6371)  # radius of earth (km)
 r25 = re+(25)  # radius of earth + 25 km altitude
 r18 = re+(18)  # radius of earth + 18 km altitude
 pi = 3.14
-vol25 = (4.0/3.0)*pi*r25**3.0  # volume of sphere of radius, earth + 25 km altitude
-vol18 = (4.0/3.0)*pi*r18**3.0  # volume of sphere of radius, earth + 18 km altitude
-vmsk = vol25 - vol18  # volume of mid stratosphere (km^3) from 18 to 25 km altitude
-vmsm = (vmsk)*10**9  # volume of mid stratosphere in m^3
+#  vol25 = (4.0/3.0)*pi*r25**3.0  # volume of sphere of radius, earth + 25 km altitude
+#  vol18 = (4.0/3.0)*pi*r18**3.0  # volume of sphere of radius, earth + 18 km altitude
+#  vmsk = vol25 - vol18  # volume of mid stratosphere (km^3) from 18 to 25 km altitude
+#  vmsm = (vmsk)*10**9  # volume of mid stratosphere in m^3
 
 sin60 = 0.866
 h25 = r25-(r25*sin60)
@@ -93,17 +93,18 @@ dae_A2 = dae_A2 * 1e-6 * 1e-6
 ut = 0.2  # uptake coefficient (gamma)for ClONO2 + HCl on H2SO4/H2O (binary aerosol) at 198K, Peter, (1997)
 kb = 1.38e-23  # Boltzmann Constant
 te1 = 198     # initial temperature (K)
-mcn = (36.46/an)/1000  # molecular mass of HCl (kg/molec)
+mmcn = 97.46  # molar mass of chlorine natrate ClONO2 (g/mol)
+mcn = (mmcn/an)/1000  # molecular mass of ClONO2 (kg/molec)
 m = mcn
-cgas = ((8*kb*te1)/(pi*m))**1/2  # mean molecular speed of gas (m/s?)
+cgas = ((8*kb*te1)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s)
 print(cgas)
 sad = 8.6  # surface area density um^2 cm^-3 from Tilmes et al (2022) CESM2 data, multi-year average following initial 5 yr particle growth phase 
 k = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
 
 sadl = np.array([2.0,2.0,3.0,4.0,5.0,8.0,9.0,8.0,8.5,8.0,7.5,10.0,10.0,9.5,8.0,7.0,8.5,9.0,9.0,8.0,8.5,8.0,10.0]) # SAD data (SAI), Tilmes et al,(2022) for CESM2
-# sades = np.array([4.3,17.2,25.8,43.0,86.0])
-sadh = 4.3
-sad2 = 17.2 
+# sades = np.array([4.3,17.2,25.8,43.0,86.0])  # list of 'error margin scenario' SAD values (0.5,2,3,5,10 x SAD value from CESM2)  
+sadh = 4.3  # half of CESM2 projected SAD
+sad2 = 17.2  # 2 x CESM2 projected SAD
 sad3 = 25.8
 sad5 = 43.0
 sad10 = 86.0
@@ -111,8 +112,8 @@ sad10 = 86.0
 # assuming conditions (such as temperature) have not changed significantly since 2020 to affect SAD values.
 
 k  = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
-kh = 0.25*ut*cgas*sadh
-k2 = 0.25*ut*cgas*sad2
+kh = 0.25*ut*cgas*sadh  # 0.5 x k
+k2 = 0.25*ut*cgas*sad2  # 2 x k
 k3 = 0.25*ut*cgas*sad3
 k5 = 0.25*ut*cgas*sad5
 k10= 0.25*ut*cgas*sad10
