@@ -78,6 +78,8 @@ vamsm = (vams)*10**9  # volume of Antarctic mid strat 18-25 km altitude (60-90s)
 
 # dela = 2.0e9 # total mass (kg) of additional aerosol needed per yr for 1K cooling, 2 Tg (until 2045), from CESM2-WACCM
 # dae = dela/vamsm  # mass density of added aerosol in Antarctic mid stratosphere, kg/m^3
+# daec = dae*1e3*1e-6  # mass density of added aerosol in Antarctic mid stratosphere, g/cm^3
+
 dela = 20  # mg/m^2 total column SO4 aerosol increase from CESM2-WACCM, fig. 2 Richter et al (2022), 60-90S, 2035-2054
 daec = (dela/7000)*1e-3 * 1e-6  # mass density g/cm^3 of added SO4 aerosol in Antarctic mid stratosphere 18-25km 
 
