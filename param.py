@@ -1,6 +1,20 @@
 import numpy as np
+import xlrd
 
 clp = 3275     # total chlorine (Cl) in atmosphere in ppt as of 2023
+
+#### reading NOAA EECS
+eecs_noaa = xlrd.open_workbook("NOAA_EECS.xls") #reading NOAA xls for EECS
+sh = eecs_noaa.sheet_by_index(0)
+ln_rec = 178 #length of record from NOAA
+eecs_y = np.zeros((ln_rec,1),float)
+eecs = np.zeros((ln_rec,1),float)
+for rx in range(15,ln_rec+15):
+    eecs_y[rx-15] = float(sh.cell_value(rowx=rx, colx=0)) #reading year column
+    eecs[rx-15] = float(sh.cell_value(rowx=rx, colx=21))   # reading EECS column
+
+clp_noaa = np.mean(eecs[(ln_rec-4):ln_rec,:]) # average over last year
+
 dcl = -8.23     # avg annual change in Cl (dissipation) in ppt/yr
 clr = clp/1e12   # total chlorine as ratio of molecules of Cl/molec air
 dclr = dcl/1e12   # avg annual change in Cl (dissipation) molec Cl/molec air
