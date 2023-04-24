@@ -12,7 +12,7 @@ t4 = 17.0
 t5 = 22.0
 
 # remaining Cl (as ratio) in atm at time (t) yrs in future from 2023
-clrt = (prm.clp + (prm.dcl * t0))/1e12
+clrt = (prm.clp_noaa + (prm.dcl * t0))/1e12
 # -------------------------------------------------------------------------
 
 # density of air
