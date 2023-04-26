@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import param as prm
+import read_cesm_values as cesm
 
 # define initial chlorine (Cl) parameters
 
@@ -246,15 +247,15 @@ print(d45rdu)
  
 #  plot O3 depletion results by yearly potential SAI start dates beginning with 2023 
 
-plt.close()
-fig=plt.figure(figsize=[12,6])
-plt.plot(sty,dO3t,'o', markersize=1, label='1K cooling')
+fig=plt.figure(1,figsize=[24,12])
+plt.plot(sty,dO3t,'o', markersize=10, label='1K cooling')
+plt.plot(2025,cesm.clox_oct_150[0],'x', markersize=20) #baseline ClOx destruction
+plt.plot(2040,cesm.clox_oct_150[4],'d', markersize=20) #baseline ClOx destruction
 plt.xlabel('start date', fontsize=14)
 plt.ylabel('dO3 (-molec cm^-3 s^-1)', fontsize=14)    
 plt.title('SAI O3 depletion (Cl dependent) by start date', fontsize=18)
+plt.savefig('ClOx_code.png')
 plt.show()
-
-plt.plot()
 
 
 # x = sty
