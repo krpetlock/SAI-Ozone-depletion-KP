@@ -2,7 +2,7 @@ import xarray as xr
 import numpy as np
 import matplotlib.pyplot as plt
 
-fold = 'CESM_data'
+fold = '/Users/danielevisioni/Documents/GitHub/'
 fname = 'b.e21.BWSSP245.f09_g17.release-cesm2.1.3.WACCM-MA-1deg.SSP245-MA-GAUSS-DEFAULT.002.cam.h0zm.'
 fname2 = '.203501-206912.nc'
 var_clox = 'OddOx_CLOxBROx_Loss'
@@ -33,3 +33,28 @@ plt.ylabel('dO3 (-molec cm^-3 s^-1)', fontsize=14)
 plt.title('ClOx driven O3 Loss in CESM2 at 150 hPa, October [60S-90S]', fontsize=18)
 plt.savefig('ClOx_CESM.png')
 plt.show()
+
+fig = plt.figure(98,figsize=[24,12])
+fig, (ax1,ax2) = plt.subplots(1,2)
+ax1.plot(clox_oct[0,:]*1e-6,lev,'g-', label='2035 (no SAI)')
+ax1.plot(clox_oct[9,:]*1e-6,lev,'r-', label='2040 (SAI onset')
+ax1.plot(clox_oct[34,:]*1e-6,lev,'b-', label='2069 (SAI)')
+ax1.set(xlabel='dO3 (-10^6 molec cm^-3 s^-1)', ylabel='Altitude (hPa)')
+
+ax1.semilogy()
+ax1.set_ylim([300, .1])
+
+ax1.legend(fontsize="8")
+
+ax2.plot(clox_oct[9,:]*1e-6-clox_oct[0,:]*1e-6,lev,'r-', label='2040 (SAI onset')
+ax2.plot(clox_oct[34,:]*1e-6-clox_oct[0,:]*1e-6,lev,'b-', label='2069 (SAI)')
+ax2.set(xlabel='Changes compared to 2035')
+
+ax2.semilogy()
+ax2.set_ylim([300, .1])
+
+plt.title('ClOx driven O3 Loss in CESM2 in October [60S-90S]', fontsize=14)
+plt.savefig('ClOx_CESM_profile.png')
+plt.show()
+
+ax2.plot([0,0],[1e-1,1e3])
