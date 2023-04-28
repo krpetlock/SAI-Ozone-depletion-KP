@@ -128,14 +128,15 @@ k10= 0.25*ut*cgas*sad10
 #    ksl = ksal(a) # gives reaction rate (rxns m^-3 s^-1) for each year into SAI deployment, based on successive temporal SAD values following initial deployment
 # ksl = np.array([ksl])
 
-# class A(param.Parameterized)
-#     title = param.String(default = "rxnrate", doc = "Reaction rate (k) rxns/cm^3 sec")
+# class A(prm.Parameterized)
+#     title = prm.String(default = "rxnrate", doc = "Reaction rate (k) rxns/cm^3 sec")
 # class B(A)
-#     a = param.Temperature(192, bounds=(192,205), doc = "First temp")
-#     b = parem.UptakeR1(0.001, bounds=(0.001, 10), doc = "Fist utc")
-#     c = param.SAD(2.0, bounds=(2,10), doc = "First SAD")
-#     d = param.tts(0, bounds=(0,22), doc = "Time from 2023 until start")
-#     e = param.Cl(3.5e-13, bounds(0.00,0.001), doc = "Cl at 20km  g/cm^3")
+#     a = prm.daec(0, bounds=(1e-12,1e-11), doc = "First SO4 aerosol g/cm^3")
+#     b = prm.Temp(192, bounds=(192,205), doc = "First Temp")
+#     c = prm.UtR1(0.001, bounds=(0.001, 10), doc = "Fist utc")
+#     d = prm.SAD(2.0, bounds=(2,10), doc = "First SAD")
+#     e = prm.tts(0, bounds=(0,22), doc = "Time from 2023 until start")
+#     f = prm.Cl(3.5e-13, bounds(0.00,0.001), doc = "Cl at 20km  g/cm^3")
     
 print(k)    
 print('')     
