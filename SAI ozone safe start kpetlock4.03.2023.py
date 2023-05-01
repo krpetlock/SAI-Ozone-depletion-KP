@@ -103,7 +103,7 @@ m = mcn
 cgas = ((8*kb*te1)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s)
 print(cgas)
 sad = 8.6  # surface area density um^2 cm^-3 from Tilmes et al (2022) CESM2 data, multi-year average following initial 5 yr particle growth phase 
-k = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
+#k = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
 
 # sades = np.array([4.3,17.2,25.8,43.0,86.0])  # list of 'error margin scenario' SAD values (0.5,2,3,5,10 x SAD value from CESM2)  
 sadh = 4.3  # half of CESM2 projected SAD
@@ -113,6 +113,8 @@ sad5 = 43.0
 sad10 = 86.0
 # Note: SAD values, from source research study, for a 2020 start, (and for each year into SAI deployment) are applied here to later start dates, 
 # assuming conditions (such as temperature) have not changed significantly since 2020 to affect SAD values.
+
+k = np.zeros((np.size(prm.sadl),1), dtype = float)
 
 for i,sad_i in enumerate(prm.sadl):
   k[i] =   0.25*ut*cgas*sad_i
@@ -149,11 +151,11 @@ d35m = dO35/gmo  # ozone depletion from reaction R1 (2035 SAI start) in molec/cm
 d45m = dO45/gmo  # ozone depletion from reaction R1 (2045 SAI start) in molec/cm^3 
 
 d23s = d23m*dac  # ozone depletion (surface air equivalent) from R1 (2023 start) molec/cm^3, at STP
-d23sr = round(d23s, 2)  # rounded to 2 decimal places
+d23sr = np.around(d23s, 2)  # rounded to 2 decimal places
 d35s = d35m*dac  # ozone depletion (surface air equivalent) from R1 (2035 start) molec/cm^3, at STP
-d35sr = round(d35s, 2)
+d35sr = np.around(d35s, 2)
 d45s = d45m*dac  # ozone depletion (surface air equivalent) from R1 (2045 start) molec/cm^3, at STP
-d45sr = round(d45s, 2)
+d45sr = np.around(d45s, 2)
 
 # d23l = -((c+(dc * t0)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2023 start) molec/cm^3, at STP, variable SAD & k
 # d25l = -((c+(dc * t1)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2025 start) molec/cm^3, at STP, variable SAD & k
@@ -167,11 +169,11 @@ d45sr = round(d45s, 2)
 
 du = 2.6867e20   # molec/m^2  in one Dobson Unit
 d23du = (d23m*7000)/du  # O3 depletion from R1 (2023 start) in Dobson Units (using mid-strat column from 18-25 km)
-d23rdu = round(d23du, 2)
+d23rdu = np.around(d23du, 2)
 d35du = (d35m*7000)/du  # O3 depletion from R1 (2035 start) in Dobson Units   "       "        "           "
-d35rdu = round(d35du, 2)
+d35rdu = np.around(d35du, 2)
 d45du = (d45m*7000)/du  # O3 depletion from R1 (2045 start) in Dobson Units   "       "        "           "
-d45rdu = round(d45du, 2)
+d45rdu = np.around(d45du, 2)
 # --------------------------------------------------------------------------------------------------------
 
  # [-(((c+(dc*wt))*daec)*k*2)*dac/gmo]  # list of dO3 for 1 yr step successive future SAI start times (molec m^-3)
