@@ -105,7 +105,6 @@ print(cgas)
 sad = 8.6  # surface area density um^2 cm^-3 from Tilmes et al (2022) CESM2 data, multi-year average following initial 5 yr particle growth phase 
 k = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
 
-sadl = np.array([2.0,2.0,3.0,4.0,5.0,8.0,9.0,8.0,8.5,8.0,7.5,10.0,10.0,9.5,8.0,7.0,8.5,9.0,9.0,8.0,8.5,8.0,10.0]) # SAD data (SAI), Tilmes et al,(2022) for CESM2
 # sades = np.array([4.3,17.2,25.8,43.0,86.0])  # list of 'error margin scenario' SAD values (0.5,2,3,5,10 x SAD value from CESM2)  
 sadh = 4.3  # half of CESM2 projected SAD
 sad2 = 17.2  # 2 x CESM2 projected SAD
@@ -115,12 +114,15 @@ sad10 = 86.0
 # Note: SAD values, from source research study, for a 2020 start, (and for each year into SAI deployment) are applied here to later start dates, 
 # assuming conditions (such as temperature) have not changed significantly since 2020 to affect SAD values.
 
-k  = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
-kh = 0.25*ut*cgas*sadh  # 0.5 x k
-k2 = 0.25*ut*cgas*sad2  # 2 x k
-k3 = 0.25*ut*cgas*sad3
-k5 = 0.25*ut*cgas*sad5
-k10= 0.25*ut*cgas*sad10
+for i,sad_i in enumerate(prm.sadl):
+  k[i] =   0.25*ut*cgas*sad_i
+  
+#k  = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
+#kh = 0.25*ut*cgas*sadh  # 0.5 x k
+#k2 = 0.25*ut*cgas*sad2  # 2 x k
+#k3 = 0.25*ut*cgas*sad3
+#k5 = 0.25*ut*cgas*sad5
+#k10= 0.25*ut*cgas*sad10
 
 # def ksal(x,y = cgas):
 #    return (0.25*ut*y*x)
@@ -129,16 +131,7 @@ k10= 0.25*ut*cgas*sad10
 #    ksl = ksal(a) # gives reaction rate (rxns m^-3 s^-1) for each year into SAI deployment, based on successive temporal SAD values following initial deployment
 # ksl = np.array([ksl])
 
-# class A(param.Parameterized)
-#     title = param.String(default = "rxnrate", doc = "Reaction rate (k) rxns/cm^3 sec")
-# class B(A)
-#     a = param.Temperature(192, bounds=(192,205), doc = "First temp")
-#     b = parem.UptakeR1(0.001, bounds=(0.001, 10), doc = "Fist utc")
-#     c = param.SAD(2.0, bounds=(2,10), doc = "First SAD")
-#     d = param.tts(0, bounds=(0,22), doc = "Time from 2023 until start")
-#     e = param.Cl(3.5e-13, bounds(0.00,0.001), doc = "Cl at 20km  g/cm^3")
-    
-print(k)    
+print(k[0])    
 print('')     
 # ---------------------------------------------------------------------------
 
@@ -223,7 +216,7 @@ print(dO3y)
 # print outputs with string ('words.......') labels
 
 print('The value of k, (rxns/cm^3 s) calculated using Eq from Wegner et al, (2012) is:')
-print(k)
+print(k[0])
 print('')
 print('O3 depletion in molec/cm^3 s (surface air equivelent) from (R1) for a 2023 SAI start, 1K surface cooling, is:')
 print(d23sr)
