@@ -49,8 +49,8 @@ print(c20)
 c = c20
 dc = dc20
 
-#  clkm = (mc20 * gmcl)  # Cl in g/m^3
-#  clgc = clkm * 1e-6  # Cl in g/cm^3
+#  clm = (mc20 * gmcl)  # Cl in g/m^3
+#  clgc = clm * 1e-6  # Cl in g/cm^3
 # dclgc = (dmc20c * gmcl)  # annual change in Cl in g/cm^3 
 # ------------------------------------------------------------------------
 
@@ -100,12 +100,13 @@ mmcn = 97.46  # molar mass of chlorine natrate ClONO2 (g/mol)
 mcn = (mmcn/an)/1000  # molecular mass of ClONO2 (kg/molec)
 m = mcn
 cgas = ((8*kb*te1)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s)
-print(cgas)
+cgsc = cgas*100  # mean molecular speed of gas phase ClONO2 in (cm/s)
+print(cgsc)
 sad = 8.6  # surface area density um^2 cm^-3 from Tilmes et al (2022) CESM2 data, multi-year average following initial 5 yr particle growth phase 
-k = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
+k = 0.25*ut*cgsc*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
 
 sadl = np.array([2.0,2.0,3.0,4.0,5.0,8.0,9.0,8.0,8.5,8.0,7.5,10.0,10.0,9.5,8.0,7.0,8.5,9.0,9.0,8.0,8.5,8.0,10.0]) # SAD data (SAI), Tilmes et al,(2022) for CESM2
-# sades = np.array([4.3,17.2,25.8,43.0,86.0])  # list of 'error margin scenario' SAD values (0.5,2,3,5,10 x SAD value from CESM2)  
+# sades = np.array([4.3,17.2,25.8,43.0,86.0])  # list of 'error scenario' SAD values (0.5,2,3,5,10 x SAD value from CESM2)  
 sadh = 4.3  # half of CESM2 projected SAD
 sad2 = 17.2  # 2 x CESM2 projected SAD
 sad3 = 25.8
