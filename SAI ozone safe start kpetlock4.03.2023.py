@@ -122,11 +122,11 @@ k3 = 0.25*ut*cgas*sad3
 k5 = 0.25*ut*cgas*sad5
 k10= 0.25*ut*cgas*sad10
 
-def ksal(x,y = cgas):
+def ksal(x,y = cgsc):
     return (0.25*ut*y*x)
 a = sadl
 for sad in (sadl):
-    ksl = ksal(a) # gives reaction rate (rxns m^-3 s^-1) for each year into SAI deployment, based on successive temporal SAD values following initial deployment
+    ksl = ksal(a) # gives reaction rate (rxns cm^-3 s^-1) for each year into SAI deployment, based on successive temporal SAD values following initial deployment
 ksl = np.array([ksl])
 
 # class A(prm.Parameterized)
