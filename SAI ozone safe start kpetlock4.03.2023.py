@@ -119,13 +119,6 @@ k = np.zeros((np.size(prm.sadl),1), dtype = float)
 for i,sad_i in enumerate(prm.sadl):
   k[i] =   0.25*ut*cgas*sad_i
   
-#k  = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
-#kh = 0.25*ut*cgas*sadh  # 0.5 x k
-#k2 = 0.25*ut*cgas*sad2  # 2 x k
-#k3 = 0.25*ut*cgas*sad3
-#k5 = 0.25*ut*cgas*sad5
-#k10= 0.25*ut*cgas*sad10
-
 # def ksal(x,y = cgas):
 #    return (0.25*ut*y*x)
 # a = sadl
@@ -181,38 +174,8 @@ d45rdu = np.around(d45du, 2)
 def odp(x, y = daec):
    return ((x+(dc*tts))*y)*k*2*dac/gmo
 a = c
-for wt in (tts):
+for wt in tts:
     dO3t = odp(a)
-    
-print(dO3t)
-print('')
-
-dO3y = (
-    {2023:dO3t[0], 
-    2024:dO3t[1], 
-    2025:dO3t[2], 
-    2026:dO3t[3], 
-    2027:dO3t[4],
-    2028:dO3t[5],
-    2029:dO3t[6],
-    2030:dO3t[7],
-    2031:dO3t[8],
-    2032:dO3t[9],
-    2033:dO3t[10], 
-    2034:dO3t[11],
-    2035:dO3t[12],
-    2036:dO3t[13],
-    2037:dO3t[14], 
-    2038:dO3t[15], 
-    2039:dO3t[16],
-    2040:dO3t[17],
-    2041:dO3t[18],
-    2042:dO3t[19],
-    2043:dO3t[20], 
-    2044:dO3t[21],
-    2045:dO3t[22]}
-    )
-print(dO3y)
 
 
 # print outputs with string ('words.......') labels
