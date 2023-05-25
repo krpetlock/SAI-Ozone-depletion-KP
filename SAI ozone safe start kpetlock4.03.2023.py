@@ -100,7 +100,7 @@ te1 = 198     # initial temperature (K)
 mmcn = 97.46  # molar mass of chlorine natrate ClONO2 (g/mol)
 mcn = (mmcn/an)/1000  # molecular mass of ClONO2 (kg/molec)
 m = mcn
-cgas = ((8*kb*te1)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s)
+cgas = ((8*kb*prm.temp)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s)
 print(cgas)
 sad = 8.6  # surface area density um^2 cm^-3 from Tilmes et al (2022) CESM2 data, multi-year average following initial 5 yr particle growth phase 
 #k = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
@@ -114,11 +114,12 @@ sad10 = 86.0
 # Note: SAD values, from source research study, for a 2020 start, (and for each year into SAI deployment) are applied here to later start dates, 
 # assuming conditions (such as temperature) have not changed significantly since 2020 to affect SAD values.
 
-k = np.zeros((np.size(prm.sadl),np.size(prm.gamma)), dtype = float)
+k = np.zeros((np.size(prm.sadl),np.size(prm.gamma),np.size(cgas)), dtype = float)
 
 for j,gamma_j in enumerate(prm.gamma):
-  for i,sad_i in enumerate(prm.sadl):
-    k[i,j] =   0.25*gamma_j*cgas*sad_i
+    for i,sad_i in enumerate(prm.sadl):
+        for l,cgas_l in enumerate(cgas):
+            k[i,j,l] =   0.25*gamma_j*cgas_l*sad_i
   
 # def ksal(x,y = cgas):
 #    return (0.25*ut*y*x)
