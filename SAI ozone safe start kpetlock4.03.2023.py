@@ -114,10 +114,11 @@ sad10 = 86.0
 # Note: SAD values, from source research study, for a 2020 start, (and for each year into SAI deployment) are applied here to later start dates, 
 # assuming conditions (such as temperature) have not changed significantly since 2020 to affect SAD values.
 
-k = np.zeros((np.size(prm.sadl),1), dtype = float)
+k = np.zeros((np.size(prm.sadl),np.size(prm.gamma)), dtype = float)
 
-for i,sad_i in enumerate(prm.sadl):
-  k[i] =   0.25*ut*cgas*sad_i
+for j,gamma_j in enumerate(prm.gamma):
+  for i,sad_i in enumerate(prm.sadl):
+    k[i,j] =   0.25*gamma_j*cgas*sad_i
   
 # def ksal(x,y = cgas):
 #    return (0.25*ut*y*x)
