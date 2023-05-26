@@ -4,13 +4,6 @@ import param as prm
 
 # define initial chlorine (Cl) parameters
 
-t0 = 0.0           # years in future from 2023 (initially set to 0 for 2023)
-t1 = 2.0
-t2 = 7.0            
-t3 = 12.0
-t4 = 17.0
-t5 = 22.0
-
 # remaining Cl (as ratio) in atm at time (t) yrs in future from 2023
 clrt = (prm.clp + (prm.dcl * t0))/1e12
 # -------------------------------------------------------------------------
@@ -102,25 +95,12 @@ m = mcn
 cgas = ((8*kb*te1)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s)
 cgsc = cgas*100  # mean molecular speed of gas phase ClONO2 in (cm/s)
 print(cgsc)
-sad = 8.6  # surface area density um^2 cm^-3 from Tilmes et al (2022) CESM2 data, multi-year average following initial 5 yr particle growth phase 
-k = 0.25*ut*cgsc*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
-
+sad = 8.6  # surface area density um^2 cm^-3 from Tilmes et al (2022) CESM2 data, multi-year average following initial 3 yr particle growth phase 
 sadl = np.array([2.0,2.0,3.0,4.0,5.0,8.0,9.0,8.0,8.5,8.0,7.5,10.0,10.0,9.5,8.0,7.0,8.5,9.0,9.0,8.0,8.5,8.0,10.0]) # SAD data (SAI), Tilmes et al,(2022) for CESM2
-# sades = np.array([4.3,17.2,25.8,43.0,86.0])  # list of 'error scenario' SAD values (0.5,2,3,5,10 x SAD value from CESM2)  
-sadh = 4.3  # half of CESM2 projected SAD
-sad2 = 17.2  # 2 x CESM2 projected SAD
-sad3 = 25.8
-sad5 = 43.0
-sad10 = 86.0
-# Note: SAD values, from source research study, for a 2020 start, (and for each year into SAI deployment) are applied here to later start dates, 
-# assuming conditions (such as temperature) have not changed significantly since 2020 to affect SAD values.
+sade = np.array([8.60,6.45,4.30,2.15,17.20,25.80,34.40,43.00,68.80,86.00])  # SAD error scenario values (CESM2 post growth avg x 1, .75, .5, .25, 2,3,4,5,8,10) um^2/cm^3
 
 k  = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
-kh = 0.25*ut*cgas*sadh  # 0.5 x k
-k2 = 0.25*ut*cgas*sad2  # 2 x k
-k3 = 0.25*ut*cgas*sad3
-k5 = 0.25*ut*cgas*sad5
-k10= 0.25*ut*cgas*sad10
+kc = 0.25*ut*cgsc*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
 
 def ksal(x,y = cgsc):
     return (0.25*ut*y*x)
@@ -147,6 +127,7 @@ print('')
 
 tts = np.linspace(1,prm.year_e-prm.year_b+1,prm.year_e-prm.year_b+1)
 sty = tts+prm.year_b-1
+tse = np.array([0,2,7,12,17,22,27,32,37,42])   # yrs from 2023, five yr steps after 2025, extended to 2065
 
 dO23 = -((c+(dc * t0)) * daec)*k*2  #a ozone depletion from (R1), 2023 SAI start (tts= 0) for 1K surface cooling, g cm^-3 s^-1
 dO35 = -((c+(dc * t3)) * daec)*k*2  # ozone depletion from (R1), 2035 SAI start (tts=12) for 1K surface cooling, g cm^-3 s^-1
@@ -162,13 +143,6 @@ d35s = d35m*dac  # ozone depletion (surface air equivalent) from R1 (2035 start)
 d35sr = round(d35s, 2)
 d45s = d45m*dac  # ozone depletion (surface air equivalent) from R1 (2045 start) molec/cm^3, at STP
 d45sr = round(d45s, 2)
-
-# d23l = -((c+(dc * t0)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2023 start) molec/cm^3, at STP, variable SAD & k
-# d25l = -((c+(dc * t1)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2025 start) molec/cm^3, at STP, variable SAD & k
-# d30l = -((c+(dc * t2)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2030 start) molec/cm^3, at STP, variable SAD & k
-# d35l = -((c+(dc * t3)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2035 start) molec/cm^3, at STP, variable SAD & k
-# d40l = -((c+(dc * t4)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2040 start) molec/cm^3, at STP, variable SAD & k
-# d45l = -((c+(dc * t5)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2045 start) molec/cm^3, at STP, variable SAD & k
 # --------------------------------------------------------------------------------------------------------
 
 #  calculate stratospheric column ozone depletion in Dobson Units (DU)
@@ -182,7 +156,7 @@ d45du = (d45m*7000)/du  # O3 depletion from R1 (2045 start) in Dobson Units   " 
 d45rdu = round(d45du, 2)
 # --------------------------------------------------------------------------------------------------------
 
- # [-(((c+(dc*wt))*daec)*k*2)*dac/gmo]  # list of dO3 for 1 yr step successive future SAI start times (molec m^-3)
+# list of dO3 for 1 yr step successive future SAI start times (molec m^-3)
 
 def odp(x, y = daec):
    return ((x+(dc*tts))*y)*k*2*dac/gmo
@@ -192,34 +166,6 @@ for wt in (tts):
     
 print(dO3t)
 print('')
-
-dO3y = (
-    {2023:dO3t[0], 
-    2024:dO3t[1], 
-    2025:dO3t[2], 
-    2026:dO3t[3], 
-    2027:dO3t[4],
-    2028:dO3t[5],
-    2029:dO3t[6],
-    2030:dO3t[7],
-    2031:dO3t[8],
-    2032:dO3t[9],
-    2033:dO3t[10], 
-    2034:dO3t[11],
-    2035:dO3t[12],
-    2036:dO3t[13],
-    2037:dO3t[14], 
-    2038:dO3t[15], 
-    2039:dO3t[16],
-    2040:dO3t[17],
-    2041:dO3t[18],
-    2042:dO3t[19],
-    2043:dO3t[20], 
-    2044:dO3t[21],
-    2045:dO3t[22]}
-    )
-print(dO3y)
-
 
 # print outputs with string ('words.......') labels
 
@@ -258,13 +204,20 @@ plt.show()
 
 plt.plot()
 
+# plot ozone depletion vs Cl with SAD error scanarios:
 
-# x = sty
+def odps(x,y = daec2):
+    def ksae(w,z = cgsc):
+        return (0.25*ut*z*w)   
+    a = sade
+    for sad in sade:
+        kse = ksae(a) # reaction rate (rxns cm^-3 s^-1) based on error scenario values for SAD
+    kse = np.array([kse]) 
+    
+    return ((c+(dc*x))*y)*kse*2*dac/gmo   
+a = tse   
+for ts in tse:
+    docs = odps(a)    
+docs = np.array([docs])   
 
-# plt.plot(x, d25l)
-# plt.plot(x, d30l)
-# plt.plot(x, d35l)
-# plt.plot(x, d40l)
-# plt.plot(x, d45l)
-# plt.show()
-# print('')
+
