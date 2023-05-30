@@ -110,16 +110,6 @@ for sad in (sadl):
     ksl = ksal(a) # gives reaction rate (rxns cm^-3 s^-1) for each year into SAI deployment, based on successive temporal SAD values following initial deployment
 ksl = np.array([ksl])
 
-# class A(prm.Parameterized)
-#     title = prm.String(default = "rxnrate", doc = "Reaction rate (k) rxns/cm^3 sec")
-# class B(A)
-#     a = prm.daec(0, bounds=(1e-12,1e-11), doc = "First SO4 aerosol g/cm^3")
-#     b = prm.Temp(192, bounds=(192,205), doc = "First Temp")
-#     c = prm.UtR1(0.001, bounds=(0.001, 10), doc = "Fist utc")
-#     d = prm.SAD(2.0, bounds=(2,10), doc = "First SAD")
-#     e = prm.tts(0, bounds=(0,22), doc = "Time from 2023 until start")
-#     f = prm.Cl(3.5e-13, bounds(0.00,0.001), doc = "Cl at 20km  g/cm^3")
-    
 print(k)    
 cgas = ((8*kb*prm.temp)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s)
 print(cgas)
@@ -142,13 +132,6 @@ for j,gamma_j in enumerate(prm.gamma):
         for l,cgas_l in enumerate(cgas):
             k[i,j,l] =   0.25*gamma_j*cgas_l*sad_i
   
-# def ksal(x,y = cgas):
-#    return (0.25*ut*y*x)
-# a = sadl
-# for sad in (sadl):
-#    ksl = ksal(a) # gives reaction rate (rxns m^-3 s^-1) for each year into SAI deployment, based on successive temporal SAD values following initial deployment
-# ksl = np.array([ksl])
-
 print(k[0])    
 print('')     
 # ---------------------------------------------------------------------------
@@ -172,7 +155,6 @@ d23sr = np.around(d23s, 2)  # rounded to 2 decimal places
 d35s = d35m*dac  # ozone depletion (surface air equivalent) from R1 (2035 start) molec/cm^3, at STP
 d35sr = np.around(d35s, 2)
 d45s = d45m*dac  # ozone depletion (surface air equivalent) from R1 (2045 start) molec/cm^3, at STP
-
 d45sr = np.around(d45s, 2)
 
 # d23l = -((c+(dc * t0)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2023 start) molec/cm^3, at STP, variable SAD & k
