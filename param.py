@@ -15,7 +15,7 @@ for rx in range(15,ln_rec+15):
 
 clp_noaa = np.mean(eecs[(ln_rec-4):ln_rec,:]) # average over last year
 
-dcl = -8.23     # avg annual change in Cl (dissipation) in ppt/yr
+dcl = -33.3    # avg annual change in Cl (dissipation) in ppt/yr; NOAA-ODG Index, 2022 fig 2
 clr = clp/1e12   # total chlorine as ratio of molecules of Cl/molec air
 dclr = dcl/1e12   # avg annual change in Cl (dissipation) molec Cl/molec air
 
