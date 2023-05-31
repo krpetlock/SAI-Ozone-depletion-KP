@@ -2,25 +2,28 @@ import matplotlib.pyplot as plt
 import numpy as np
 import param as prm
 import read_cesm_values as cesm
+#-------------------------------------------------------------------------
 
-# define initial chlorine (Cl) parameters
+# define constants
+mma = 28.96   # molar mass of air in g/mole
+mmo = 48      # molar mass of ozone in g/mole
+mmcl = 35.45  # molar mass of Cl (g/mole)
+mmcn = 97.46  # molar mass of chlorine natrate ClONO2 (g/mol
+an = 6.023e23 # Avogadros number of molec/mole
+re = (6371)   # radius of earth (km)
+pi = 3.14     # circum/diameter
+sin60 = 0.866
+da20 = 0.088    # density of air at 20 km altitude, Kg/m^3
+das = 1.293    # density of air at standard temp and pressure (STP) (surface air) in Kg/m^3
+kb = 1.38e-23  # Boltzmann Constant
+#--------------------------------------------------------------------------
 
 # remaining Cl (as ratio) in atm at time (t) yrs in future from 2023
 clrt = (prm.clp_noaa + (prm.dcl * t0))/1e12
 # -------------------------------------------------------------------------
 
-# density of air
-
-da20 = 0.088    # density of air at 20 km altitude, Kg/m^3
-das = 1.293    # density of air at standard temp and pressure (STP) (surface air) in Kg/m^3
-dac = das/da20  # air density conversion factor from 20 km tao surface air equivalent
-# -------------------------------------------------------------------------
-
 # calculate air density molecules/m^3
-
-mma = 28.96      # molar mass of air in g/mole
-mmo = 48         # molar mass of ozone in g/mole
-an = 6.023e23    # Avogadros number of molec/mole
+dac = das/da20  # air density conversion factor from 20 km tao surface air equivalent
 gma = mma/an     # g/molec air
 gmo = mmo/an     # g/molec ozone
 kma = gma/1000   # kg/molec air
@@ -29,13 +32,11 @@ ma20 = da20/kma  # molecules air / m^3 at 20 km
 # -------------------------------------------------------------------------
 
 # calculate density of Cl in g/cm^3
-
 mc20 = ma20 * prm.clr  # Cl molec/m^3 at 20 km
 mc20c = mc20*10**-6  # Cl molec/cm^3 at 20km
 dmc20 = ma20 * prm.dclr  # annual change in Cl molec/m^3 at 20km
 dmc20c = (dmc20)*10**-6  # annual change in Cl molec/cm^3 at 20km
 
-mmcl = 35.45       # molar mass of Cl (g/mole)
 gmcl = mmcl/an     # g/molec Cl
 c20 = mc20c * gmcl # Cl (g/cm^3) at 20 km
 dc20 = dmc20c * gmcl  # annual change in Cl (g/cm^3) at 20km
@@ -49,23 +50,20 @@ dc = dc20
 # ------------------------------------------------------------------------
 
 # calculate volume of Antarctic mid stratosphere, from 18-25 km altitude
-
-re = (6371)  # radius of earth (km)
 r25 = re+(25)  # radius of earth + 25 km altitude
 r18 = re+(18)  # radius of earth + 18 km altitude
-pi = 3.14
-#  vol25 = (4.0/3.0)*pi*r25**3.0  # volume of sphere of radius, earth + 25 km altitude
-#  vol18 = (4.0/3.0)*pi*r18**3.0  # volume of sphere of radius, earth + 18 km altitude
-#  vmsk = vol25 - vol18  # volume of mid stratosphere (km^3) from 18 to 25 km altitude
-#  vmsm = (vmsk)*10**9  # volume of mid stratosphere in m^3
-
-sin60 = 0.866
 h25 = r25-(r25*sin60)
 h18 = r18-(r18*sin60)
 vlc = (2/3)*(pi*((r25)**2)*h25)  # volume of larger cone (60-90s), Re + 25 km
 vsc = (2/3)*(pi*((r18)**2)*h18)  # volume of smaller cone (60-90s), Re + 18 km 
 vams = vlc - vsc # volume of Antarctic mid strat 18-25 km altitude (60-90s) (km^3)
 vamsm = (vams)*10**9  # volume of Antarctic mid strat 18-25 km altitude (60-90s) (m^3)
+
+#  global mid-stratosphere volume:
+#  vol25 = (4.0/3.0)*pi*r25**3.0  # volume of sphere of radius, earth + 25 km altitude
+#  vol18 = (4.0/3.0)*pi*r18**3.0  # volume of sphere of radius, earth + 18 km altitude
+#  vmsk = vol25 - vol18  # volume of mid stratosphere (km^3) from 18 to 25 km altitude
+#  vmsm = (vmsk)*10**9  # volume of mid stratosphere in m^3
 # -------------------------------------------------------------------------
 
 # calculate mass density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling, in g/cm^3
@@ -76,21 +74,17 @@ vamsm = (vams)*10**9  # volume of Antarctic mid strat 18-25 km altitude (60-90s)
 
 dela = 20  # mg/m^2 total column SO4 aerosol increase from CESM2-WACCM, fig. 2 Richter et al (2022), 60-90S, 2035-2054
 daec = (dela/7000)*1e-3 * 1e-6  # mass density g/cm^3 of added SO4 aerosol in Antarctic mid stratosphere 18-25km 
+#--------------------------------------------------------------------------
 
 # calculate mass density from CESM values (ARISE), take year 2 as test
-
 dae_A2 = prm.dae_A[2]*da20 
 dae_A2 = dae_A2 * 1e-6 * 1e-6
-
 # -------------------------------------------------------------------------
 
-# calculate heterogeneous reaction rate for R1
-
+# calculate heterogeneous reaction rate for R1:
 # k1 = 1000  # reaction rate for (R1); (rxns cm^-3 s^-1) at 200K in mid stratosphere, Borrmann et al, (1997)
 ut = 0.2  # uptake coefficient (gamma)for ClONO2 + HCl on H2SO4/H2O (binary aerosol) at 198K, Peter, (1997)
-kb = 1.38e-23  # Boltzmann Constant
-te1 = 198     # initial temperature (K)
-mmcn = 97.46  # molar mass of chlorine natrate ClONO2 (g/mol)
+te1 = 198     # initial temperature (K) (PSC formation)
 mcn = (mmcn/an)/1000  # molecular mass of ClONO2 (kg/molec)
 m = mcn
 cgas = ((8*kb*te1)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s)
@@ -102,6 +96,7 @@ sade = np.array([8.60,6.45,4.30,2.15,17.20,25.80,34.40,43.00,68.80,86.00])  # SA
 
 k  = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
 kc = 0.25*ut*cgsc*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
+print(k)
 
 def ksal(x,y = cgsc):
     return (0.25*ut*y*x)
@@ -110,10 +105,8 @@ for sad in (sadl):
     ksl = ksal(a) # gives reaction rate (rxns cm^-3 s^-1) for each year into SAI deployment, based on successive temporal SAD values following initial deployment
 ksl = np.array([ksl])
 
-print(k)    
-cgas = ((8*kb*prm.temp)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s)
+cgas = ((8*kb*prm.temp)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s) over temp range
 print(cgas)
-sad = 8.6  # surface area density um^2 cm^-3 from Tilmes et al (2022) CESM2 data, multi-year average following initial 5 yr particle growth phase 
 #k = 0.25*ut*cgas*sad  # Het reaction rate (rxns/cm^3 s) for (R1): ClONO2 + HCl --> Cl2 + HNO3; calculated using Wegner et al,(2012) Eq
 
 # sades = np.array([4.3,17.2,25.8,43.0,86.0])  # list of 'error margin scenario' SAD values (0.5,2,3,5,10 x SAD value from CESM2)  
@@ -122,7 +115,7 @@ sad2 = 17.2  # 2 x CESM2 projected SAD
 sad3 = 25.8
 sad5 = 43.0
 sad10 = 86.0
-# Note: SAD values, from source research study, for a 2020 start, (and for each year into SAI deployment) are applied here to later start dates, 
+# Note: SAD values, for a 2020 start, (and for each year into SAI deployment) are applied here to later start dates, 
 # assuming conditions (such as temperature) have not changed significantly since 2020 to affect SAD values.
 
 k = np.zeros((np.size(prm.sadl),np.size(prm.gamma),np.size(cgas)), dtype = float)
@@ -130,14 +123,12 @@ k = np.zeros((np.size(prm.sadl),np.size(prm.gamma),np.size(cgas)), dtype = float
 for j,gamma_j in enumerate(prm.gamma):
     for i,sad_i in enumerate(prm.sadl):
         for l,cgas_l in enumerate(cgas):
-            k[i,j,l] =   0.25*gamma_j*cgas_l*sad_i
-  
+            k[i,j,l] =   0.25*gamma_j*cgas_l*sad_i 
 print(k[0])    
 print('')     
 # ---------------------------------------------------------------------------
 
 # # calculate ozone depletion resulting from addition of new aerosol in SAI 1K cooling scenario, variable start times
-
 tts = np.linspace(1,prm.year_e-prm.year_b+1,prm.year_e-prm.year_b+1)
 sty = tts+prm.year_b-1
 tse = np.array([0,2,7,12,17,22,27,32,37,42])   # yrs from 2023, five yr steps after 2025, extended to 2065
