@@ -13,9 +13,14 @@ an = 6.023e23 # Avogadros number of molec/mole
 re = (6371)   # radius of earth (km)
 pi = 3.14     # circum/diameter
 sin60 = 0.866
-da20 = 0.088    # density of air at 20 km altitude, Kg/m^3
+da20 = 0.088   # density of air at 20 km altitude, Kg/m^3
 das = 1.293    # density of air at standard temp and pressure (STP) (surface air) in Kg/m^3
 kb = 1.38e-23  # Boltzmann Constant
+du = 2.6867e20  # molec/m^2  in one Dobson Unit
+rad = 0.05     # approx radius (um) of Antacrtic spring NAT aerosol, Fiebig et al (2014)
+ndN = 5e-4     # Antarctic (surface measured) NAT number density cm^-3), Sept-Oct, Weimer et al, (2022) 
+dna = 1.5      # approx density of nitric acid HNO3 g/cm^3
+dH2O = 1.0     # density of H2O g/cm^3
 #--------------------------------------------------------------------------
 
 # remaining Cl (as ratio) in atm at time (t) yrs in future from 2023
@@ -23,7 +28,7 @@ clrt = (prm.clp_noaa + (prm.dcl * t0))/1e12
 # -------------------------------------------------------------------------
 
 # calculate air density molecules/m^3
-dac = das/da20  # air density conversion factor from 20 km tao surface air equivalent
+dac = das/da20   # air density conversion factor from 20 km tao surface air equivalent
 gma = mma/an     # g/molec air
 gmo = mmo/an     # g/molec ozone
 kma = gma/1000   # kg/molec air
@@ -38,7 +43,7 @@ dmc20 = ma20 * prm.dclr  # annual change in Cl molec/m^3 at 20km
 dmc20c = (dmc20)*10**-6  # annual change in Cl molec/cm^3 at 20km
 
 gmcl = mmcl/an     # g/molec Cl
-c20 = mc20c * gmcl # Cl (g/cm^3) at 20 km
+c20 = mc20c * gmcl  # Cl (g/cm^3) at 20 km
 dc20 = dmc20c * gmcl  # annual change in Cl (g/cm^3) at 20km
 print(c20)
 c = c20
@@ -56,19 +61,19 @@ h25 = r25-(r25*sin60)
 h18 = r18-(r18*sin60)
 vlc = (2/3)*(pi*((r25)**2)*h25)  # volume of larger cone (60-90s), Re + 25 km
 vsc = (2/3)*(pi*((r18)**2)*h18)  # volume of smaller cone (60-90s), Re + 18 km 
-vams = vlc - vsc # volume of Antarctic mid strat 18-25 km altitude (60-90s) (km^3)
+vams = vlc - vsc      # volume of Antarctic mid strat 18-25 km altitude (60-90s) (km^3)
 vamsm = (vams)*10**9  # volume of Antarctic mid strat 18-25 km altitude (60-90s) (m^3)
 
 #  global mid-stratosphere volume:
 #  vol25 = (4.0/3.0)*pi*r25**3.0  # volume of sphere of radius, earth + 25 km altitude
 #  vol18 = (4.0/3.0)*pi*r18**3.0  # volume of sphere of radius, earth + 18 km altitude
 #  vmsk = vol25 - vol18  # volume of mid stratosphere (km^3) from 18 to 25 km altitude
-#  vmsm = (vmsk)*10**9  # volume of mid stratosphere in m^3
+#  vmsm = (vmsk)*10**9   # volume of mid stratosphere in m^3
 # -------------------------------------------------------------------------
 
 # calculate mass density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling, in g/cm^3
 
-# dela = 2.0e9 # total mass (kg) of additional aerosol needed per yr for 1K cooling, 2 Tg (until 2045), from CESM2-WACCM
+# dela = 2.0e9      # total mass (kg) of additional aerosol needed per yr for 1K cooling, 2 Tg (until 2045), from CESM2-WACCM
 # dae = dela/vamsm  # mass density of added aerosol in Antarctic mid stratosphere, kg/m^3
 # daec = dae*1e3*1e-6  # mass density of added aerosol in Antarctic mid stratosphere, g/cm^3
 
@@ -83,12 +88,12 @@ dae_A2 = dae_A2 * 1e-6 * 1e-6
 
 # calculate heterogeneous reaction rate for R1:
 # k1 = 1000  # reaction rate for (R1); (rxns cm^-3 s^-1) at 200K in mid stratosphere, Borrmann et al, (1997)
-ut = 0.2  # uptake coefficient (gamma)for ClONO2 + HCl on H2SO4/H2O (binary aerosol) at 198K, Peter, (1997)
-te1 = 198     # initial temperature (K) (PSC formation)
+ut = 0.2     # uptake coefficient (gamma)for ClONO2 + HCl on H2SO4/H2O (binary aerosol) at 198K, Peter, (1997)
+te1 = 198    # initial temperature (K) (PSC formation)
 mcn = (mmcn/an)/1000  # molecular mass of ClONO2 (kg/molec)
 m = mcn
 cgas = ((8*kb*te1)/(pi*m))**1/2  # mean molecular speed of gas phase ClONO2 (m/s)
-cgsc = cgas*100  # mean molecular speed of gas phase ClONO2 in (cm/s)
+cgsc = cgas*100              # mean molecular speed of gas phase ClONO2 in (cm/s)
 print(cgsc)
 sad = 8.6  # surface area density um^2 cm^-3 from Tilmes et al (2022) CESM2 data, multi-year average following initial 3 yr particle growth phase 
 sadl = np.array([2.0,2.0,3.0,4.0,5.0,8.0,9.0,8.0,8.5,8.0,7.5,10.0,10.0,9.5,8.0,7.0,8.5,9.0,9.0,8.0,8.5,8.0,10.0]) # SAD data (SAI), Tilmes et al,(2022) for CESM2
@@ -157,8 +162,6 @@ d45sr = np.around(d45s, 2)
 # --------------------------------------------------------------------------------------------------------
 
 #  calculate stratospheric column ozone depletion in Dobson Units (DU)
-
-du = 2.6867e20   # molec/m^2  in one Dobson Unit
 d23du = (d23m*7000)/du  # O3 depletion from R1 (2023 start) in Dobson Units (using mid-strat column from 18-25 km)
 d23rdu = np.around(d23du, 2)
 d35du = (d35m*7000)/du  # O3 depletion from R1 (2035 start) in Dobson Units   "       "        "           "
@@ -213,7 +216,6 @@ plt.title('SAI O3 depletion (Cl dependent) by start date', fontsize=18)
 plt.savefig('ClOx_code.png')
 plt.show()
 
-
 """
 plt.plot()
 
@@ -234,4 +236,23 @@ for ts in tse:
 docs = np.array([docs])   
 
 """
+
+# calculate baseline aerosol mass density in air:
+#-------------------------------------------------------------------------
+vNAT = (4/3)*pi*rad**3  # volume of representative NAT particle (um^3)
+vdN = vNAT*ndN*1e-12   # volume density of NAT (cm^3/cm^3 air)
+dNAT = ((dna + (dH2O*3))/4)  # liquid density of NAT (g/cm^3)
+dNTa = vdN * dNAT      # density of NAT in air (g NAT/cm^3 air)
+blae = dNTa             # baseline aerosol (density of NAT in air)
+#-------------------------------------------------------------------------
+
+# calculate baseline O3 depletion vs start date (without SAI): 
+#-------------------------------------------------------------------------
+def odb(x, y = blae):
+   return ((c+(dc*x))*y)*k*2*dac/gmo
+a = tts
+for wt in (tts):
+    dObt = odb(a)
+#-------------------------------------------------------------------------
+    
 
