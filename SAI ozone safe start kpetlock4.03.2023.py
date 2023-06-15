@@ -246,7 +246,7 @@ dNTa = vdN * dNAT      # density of NAT in air (g NAT/cm^3 air)
 blae = dNTa             # baseline aerosol (density of NAT in air)
 #-------------------------------------------------------------------------
 
-# calculate baseline O3 depletion vs start date (without SAI): 
+# calculate baseline O3 depletion vs date (without SAI): 
 #-------------------------------------------------------------------------
 def odb(x, y = blae):
    return ((c+(dc*x))*y)*k*2*dac/gmo
