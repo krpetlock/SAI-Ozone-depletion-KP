@@ -54,6 +54,24 @@ dc = dc20
 # dclgc = (dmc20c * gmcl)  # annual change in Cl in g/cm^3 
 # ------------------------------------------------------------------------
 
+# calculate baseline aerosol mass density in air:
+#-------------------------------------------------------------------------
+vNAT = (4/3)*pi*rad**3  # volume of representative NAT particle (um^3)
+vdN = vNAT*ndN*1e-12   # volume density of NAT (cm^3/cm^3 air)
+dNAT = ((dna + (dH2O*3))/4)  # liquid density of NAT (g/cm^3)
+dNTa = vdN * dNAT      # density of NAT in air (g NAT/cm^3 air)
+blae = dNTa            # baseline aerosol (density of NAT in air)
+#-------------------------------------------------------------------------
+
+# calculate baseline O3 depletion vs date (without SAI): 
+#-------------------------------------------------------------------------
+def odb(x, y = blae):
+   return ((c+(dc*x))*y)*k*2*dac/gmo
+a = tts
+for wt in (tts):
+    dObt = odb(a)
+#-------------------------------------------------------------------------
+
 # calculate volume of Antarctic mid stratosphere, from 18-25 km altitude
 r25 = re+(25)  # radius of earth + 25 km altitude
 r18 = re+(18)  # radius of earth + 18 km altitude
@@ -72,7 +90,6 @@ vamsm = (vams)*10**9  # volume of Antarctic mid strat 18-25 km altitude (60-90s)
 # -------------------------------------------------------------------------
 
 # calculate mass density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling, in g/cm^3
-
 # dela = 2.0e9      # total mass (kg) of additional aerosol needed per yr for 1K cooling, 2 Tg (until 2045), from CESM2-WACCM
 # dae = dela/vamsm  # mass density of added aerosol in Antarctic mid stratosphere, kg/m^3
 # daec = dae*1e3*1e-6  # mass density of added aerosol in Antarctic mid stratosphere, g/cm^3
@@ -237,22 +254,6 @@ docs = np.array([docs])
 
 """
 
-# calculate baseline aerosol mass density in air:
-#-------------------------------------------------------------------------
-vNAT = (4/3)*pi*rad**3  # volume of representative NAT particle (um^3)
-vdN = vNAT*ndN*1e-12   # volume density of NAT (cm^3/cm^3 air)
-dNAT = ((dna + (dH2O*3))/4)  # liquid density of NAT (g/cm^3)
-dNTa = vdN * dNAT      # density of NAT in air (g NAT/cm^3 air)
-blae = dNTa             # baseline aerosol (density of NAT in air)
-#-------------------------------------------------------------------------
 
-# calculate baseline O3 depletion vs date (without SAI): 
-#-------------------------------------------------------------------------
-def odb(x, y = blae):
-   return ((c+(dc*x))*y)*k*2*dac/gmo
-a = tts
-for wt in (tts):
-    dObt = odb(a)
-#-------------------------------------------------------------------------
     
 
