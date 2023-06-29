@@ -236,7 +236,7 @@ plt.show()
 """
 plt.plot()
 
-# plot ozone depletion vs Cl with SAD error scanarios:
+# Calculate ozone depletion vs Cl with SAD error scanarios:
 
 def odps(x,y = daec2):
     def ksae(w,z = cgsc):
