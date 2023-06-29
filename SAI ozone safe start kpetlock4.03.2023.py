@@ -98,7 +98,7 @@ dela = 20  # mg/m^2 total column SO4 aerosol increase from CESM2-WACCM, fig. 2 R
 daec = (dela/7000)*1e-3 * 1e-6  # mass density g/cm^3 of added SO4 aerosol in Antarctic mid stratosphere 18-25km 
 #--------------------------------------------------------------------------
 
-# calculate mass density from CESM values (ARISE), take year 2 as test
+# calculate mass density of SO4 from CESM values (ARISE), take year 2 as test
 dae_A2 = prm.dae_A[2]*da20 
 dae_A2 = dae_A2 * 1e-6 * 1e-6
 # -------------------------------------------------------------------------
