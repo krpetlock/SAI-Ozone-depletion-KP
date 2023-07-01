@@ -55,7 +55,6 @@ dc = dc20
 # ------------------------------------------------------------------------
 
 # calculate baseline aerosol mass density in air:
-#-------------------------------------------------------------------------
 vNAT = (4/3)*pi*rad**3  # volume of representative NAT particle (um^3)
 vdN = vNAT*ndN*1e-12   # volume density of NAT (cm^3/cm^3 air)
 dNAT = ((dna + (dH2O*3))/4)  # liquid density of NAT (g/cm^3)
@@ -64,7 +63,6 @@ blae = dNTa            # baseline aerosol (density of NAT in air)
 #-------------------------------------------------------------------------
 
 # calculate baseline O3 depletion vs date (without SAI): 
-#-------------------------------------------------------------------------
 def odb(x, y = blae):
    return ((c+(dc*x))*y)*k*2*dac/gmo
 a = tts
@@ -235,9 +233,9 @@ plt.show()
 
 """
 plt.plot()
+#-------------------------------------------------------------------------
 
-# Calculate ozone depletion vs Cl with SAD error scanarios:
-
+# Calculate O3 depletion vs Cl with SAD error scanarios:
 def odps(x,y = daec2):
     def ksae(w,z = cgsc):
         return (0.25*ut*z*w)   
@@ -251,6 +249,25 @@ a = tse
 for ts in tse:
     docs = odps(a)    
 docs = np.array([docs])   
+#-------------------------------------------------------------------------
+
+# temperature profile data from Wang and Lin (2007) fig 2b avg btw GPS and Radiosonde data 9/15/2006 Neumayer Sta Antarctica approx 70 S Lat
+alt = np.array([2,4,6,8,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27])  # altitude (km)
+hPa = np.array([780,575,400,300,225,190,155,130,110,95,80,68,50,45,40,32,28,22,18,17,12])  # pressure altitude (hPa)
+tpt = np.array([256,245,226,211,200,192,186,188,187,187,186,187,188,188,189,190,193,197,200,203,213]) # temperature (K) 
+#------------------------------------------------------------------------  
+
+# plot temperature profile
+#------------------------------------------------------------------------
+plt.close()
+fig=plt.figure(figsize=[12,6])
+plt.plot(tpt,alt,'o', markersize=1, label=('Neumayer Station 9/15/2006')
+plt.xlabel('temperature (K)', fontsize=14)
+plt.ylabel('altitude (km)', fontsize=14)    
+plt.title('Antarctic spring 2006 temperature profile', fontsize=18)
+plt.show()
+plt.plot()
+#-----------------------------------------------------------------------
 
 """
 
