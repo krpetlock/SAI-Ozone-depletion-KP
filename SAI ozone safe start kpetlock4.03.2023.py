@@ -5,20 +5,21 @@ import read_cesm_values as cesm
 #-------------------------------------------------------------------------
 
 # define constants
-mma = 28.96   # molar mass of air in g/mole
-mmo = 48      # molar mass of ozone in g/mole
+mma = 28.96   # molar mass of air (g/mole)
+mmo = 48      # molar mass of ozone in (g/mole)
 mmcl = 35.45  # molar mass of Cl (g/mole)
-mmcn = 97.46  # molar mass of chlorine natrate ClONO2 (g/mol
-an = 6.023e23 # Avogadros number of molec/mole
+mmcn = 97.46  # molar mass of chlorine natrate ClONO2 (g/mole)
+mms = 96.06   # molar mass of sulfate (g/mole)
+an = 6.023e23 # Avogadros number of (molec/mole)
 re = (6371)   # radius of earth (km)
-pi = 3.14     # circum/diameter
+pi = 3.14     # circum/diameter 
 sin60 = 0.866
 da20 = 0.088   # density of air at 20 km altitude, Kg/m^3
 das = 1.293    # density of air at standard temp and pressure (STP) (surface air) in Kg/m^3
 kb = 1.38e-23  # Boltzmann Constant
 du = 2.6867e20  # molec/m^2  in one Dobson Unit
 rad = 0.05     # approx radius (um) of Antacrtic spring NAT aerosol, Fiebig et al (2014)
-ndN = 5e-4     # Antarctic (surface measured) NAT number density cm^-3), Sept-Oct, Weimer et al, (2022) 
+ndN = 5e-4     # Antarctic (surface measured) NAT (number density cm^-3), Sept-Oct, Weimer et al, (2022) 
 dna = 1.5      # approx density of nitric acid HNO3 g/cm^3
 dH2O = 1.0     # density of H2O g/cm^3
 #--------------------------------------------------------------------------
@@ -33,7 +34,7 @@ gma = mma/an     # g/molec air
 gmo = mmo/an     # g/molec ozone
 kma = gma/1000   # kg/molec air
 kmo = (gmo/1000) # kg/molec ozone
-ma20 = da20/kma  # molecules air / m^3 at 20 km
+ma20 = da20/kma  # molec air / m^3 at 20 km
 # -------------------------------------------------------------------------
 
 # calculate density of Cl in g/cm^3
@@ -41,34 +42,17 @@ mc20 = ma20 * prm.clr  # Cl molec/m^3 at 20 km
 mc20c = mc20*10**-6  # Cl molec/cm^3 at 20km
 dmc20 = ma20 * prm.dclr  # annual change in Cl molec/m^3 at 20km
 dmc20c = (dmc20)*10**-6  # annual change in Cl molec/cm^3 at 20km
-
 gmcl = mmcl/an     # g/molec Cl
 c20 = mc20c * gmcl  # Cl (g/cm^3) at 20 km
 dc20 = dmc20c * gmcl  # annual change in Cl (g/cm^3) at 20km
 print(c20)
 c = c20
-dc = dc20
+dc1 = dc20
 
 #  clm = (mc20 * gmcl)  # Cl in g/m^3
-#  clgc = clm * 1e-6  # Cl in g/cm^3
-# dclgc = (dmc20c * gmcl)  # annual change in Cl in g/cm^3 
+#  clc = clm * 1e-6  # Cl in g/cm^3
+# dclc = (dmc20c * gmcl)  # annual change in Cl in g/cm^3 
 # ------------------------------------------------------------------------
-
-# calculate baseline aerosol mass density in air:
-vNAT = (4/3)*pi*rad**3  # volume of representative NAT particle (um^3)
-vdN = vNAT*ndN*1e-12   # volume density of NAT (cm^3/cm^3 air)
-dNAT = ((dna + (dH2O*3))/4)  # liquid density of NAT (g/cm^3)
-dNTa = vdN * dNAT      # density of NAT in air (g NAT/cm^3 air)
-blae = dNTa            # baseline aerosol (density of NAT in air)
-#-------------------------------------------------------------------------
-
-# calculate baseline O3 depletion vs date (without SAI): 
-def odb(x, y = blae):
-   return ((c+(dc*x))*y)*k*2*dac/gmo
-a = tts
-for wt in (tts):
-    dObt = odb(a)
-#-------------------------------------------------------------------------
 
 # calculate volume of Antarctic mid stratosphere, from 18-25 km altitude
 r25 = re+(25)  # radius of earth + 25 km altitude
@@ -87,7 +71,24 @@ vamsm = (vams)*10**9  # volume of Antarctic mid strat 18-25 km altitude (60-90s)
 #  vmsm = (vmsk)*10**9   # volume of mid stratosphere in m^3
 # -------------------------------------------------------------------------
 
-# calculate mass density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling, in g/cm^3
+# calculate baseline aerosol mass density in air:
+vNAT = (4/3)*pi*rad**3  # volume of representative NAT particle (um^3)
+vdN = vNAT*ndN*1e-12   # volume density of NAT (cm^3/cm^3 air)
+dNAT = ((dna + (dH2O*3))/4)  # liquid density of NAT (g/cm^3)
+dNTa = vdN * dNAT      # density of NAT in air (g NAT/cm^3 air)
+blae = dNTa            # baseline aerosol (density of NAT in air)
+#-------------------------------------------------------------------------
+
+# calculate baseline O3 depletion vs start date (without SAI): 
+def odb(x, y = blae):
+   return ((c+(dc*x))*y)*k*2*dac/gmo
+a = tts
+for wt in (tts):
+    dObt = odb(a)
+#-------------------------------------------------------------------------
+
+# calculate mass density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling, in g/cm^3 :
+
 # dela = 2.0e9      # total mass (kg) of additional aerosol needed per yr for 1K cooling, 2 Tg (until 2045), from CESM2-WACCM
 # dae = dela/vamsm  # mass density of added aerosol in Antarctic mid stratosphere, kg/m^3
 # daec = dae*1e3*1e-6  # mass density of added aerosol in Antarctic mid stratosphere, g/cm^3
