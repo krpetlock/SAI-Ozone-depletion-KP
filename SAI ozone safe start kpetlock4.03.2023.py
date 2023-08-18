@@ -87,7 +87,7 @@ for wt in (tts):
     dObt = odb(a)
 #-------------------------------------------------------------------------
 
-# calculate mass density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling, in g/cm^3 :
+# calculate mass density of sulfate aerosol to add to Antarctic mid stratosphere for 1 K surface cooling, in g/cm^3 :
 
 # dela = 2.0e9      # total mass (kg) of additional aerosol needed per yr for 1K cooling, 2 Tg (until 2045), from CESM2-WACCM
 # dae = dela/vamsm  # mass density of added aerosol in Antarctic mid stratosphere, kg/m^3
@@ -96,6 +96,9 @@ for wt in (tts):
 dela = 20  # mg/m^2 total column SO4 aerosol increase from CESM2-WACCM, fig. 2 Richter et al (2022), 60-90S, 2035-2054
 daec = (dela/7000)*1e-3 * 1e-6  # mass density g/cm^3 of added SO4 aerosol in Antarctic mid stratosphere 18-25km 
 #--------------------------------------------------------------------------
+
+gms = mms/an  # molecular mass of sulfate (g/molec)
+mds = daec/gms  # molecular density of added sulfate (molec/cm^3) at 20km (aproxmated from 18-25km altitude)
 
 # calculate mass density of SO4 from CESM values (ARISE), take year 2 as test
 dae_A2 = prm.dae_A[2]*da20 
