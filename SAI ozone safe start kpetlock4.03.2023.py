@@ -47,7 +47,7 @@ c20 = mc20c * gmcl  # Cl (g/cm^3) at 20 km
 dc20 = dmc20c * gmcl  # annual change in Cl (g/cm^3) at 20km
 print(c20)
 c = c20
-dc1 = dc20
+dc = dc20
 
 #  clm = (mc20 * gmcl)  # Cl in g/m^3
 #  clc = clm * 1e-6  # Cl in g/cm^3
@@ -191,9 +191,9 @@ d45rdu = np.around(d45du, 2)
 
 # list of dO3 for 1 yr step successive future SAI start times (molec m^-3)
 
-def odp(x, y = daec):
-   return ((x+(dc*tts))*y)*k*2*dac/gmo
-a = c
+def odp(x, y = mds):
+   return (((c+(dc*x))/gmcl)*y)*k*2*dac
+a = tts
 for wt in tts:
     dO3t = odp(a)
 
