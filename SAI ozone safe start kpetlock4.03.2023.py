@@ -105,6 +105,15 @@ dae_A2 = prm.dae_A[2]*da20
 dae_A2 = dae_A2 * 1e-6 * 1e-6
 # -------------------------------------------------------------------------
 
+# calculate number density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling, in 
+sig = 1.6  # geometric standard deviation for Aitkin and Accumulation mode, from CESM2
+ri = 0.6e-6  # avg particle radius (m) for size distribution (bin?)
+xi = 0.2e-7  # mixing ratio (kg SO4/kg air)
+ros = 1770  # density of sulfate kg/m^3
+vi = (4/3)(pi*(ri**3))*np.exp((9/2)(np.log(sig))**2)
+ni = xi/(ros*vi)  # number density of sulfate 
+# -------------------------------------------------------------------------
+
 # calculate heterogeneous reaction rate for R1:
 # k1 = 1000  # reaction rate for (R1); (rxns cm^-3 s^-1) at 200K in mid stratosphere, Borrmann et al, (1997)
 ut = 0.2     # uptake coefficient (gamma)for ClONO2 + HCl on H2SO4/H2O (binary aerosol) at 198K, Peter, (1997)
