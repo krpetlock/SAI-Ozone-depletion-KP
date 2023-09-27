@@ -76,13 +76,22 @@ vNAT = (4/3)*pi*rad**3  # volume of representative NAT particle (um^3)
 vdN = vNAT*ndN*1e-12   # volume density of NAT (cm^3/cm^3 air)
 dNAT = ((dna + (dH2O*3))/4)  # liquid density of NAT (g/cm^3)
 dNTa = vdN * dNAT      # density of NAT in air (g NAT/cm^3 air)
-dNT20 = (dNTa)e-6 /(da20)e-6
+dNT20 = ((dNTa)e-3)/((da20)e-6)  #density of NAT in air (kg NAT/kg air) at 20 km altitude
 blae = dNTa            # baseline aerosol (density of NAT in air)
 #-------------------------------------------------------------------------
 
+# calculate number density of baseline aerosol (as NAT) in mid stratosphere:
+sig = 1.6  # geometric standard deviation for Aitkin and Accumulation mode, from CESM2
+rib = 0.6e-6  # avg particle radius (m) for size distribution (bin?)
+xib = dNT20  # mixing ratio (kg NAT/kg air) at 20 km
+ros = 1770  # density of sulfate kg/m^3
+vib = (4/3)(pi*(rib**3))*np.exp((9/2)(np.log(sig))**2)
+nib = xib/(ros*vib)  # number density of sulfate 
+#-------------------------------------------------------------------------
+
 # calculate baseline O3 depletion vs start date (without SAI): 
-def odb(x, y = dNT20):
-   return ((c+(dc*x))*y)*k*2*dac/gmo
+def odb(x, y = nib):
+   return (((c+(dc*x))/gmcl)*y)*k*2*dac/gmo
 a = tts
 for wt in (tts):
     dObt = odb(a)
@@ -107,10 +116,8 @@ dae_A2 = dae_A2 * 1e-6 * 1e-6
 # -------------------------------------------------------------------------
 
 # calculate number density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling, in 
-sig = 1.6  # geometric standard deviation for Aitkin and Accumulation mode, from CESM2
 ri = 0.6e-6  # avg particle radius (m) for size distribution (bin?)
 xi = 0.2e-7  # mixing ratio (kg SO4/kg air)
-ros = 1770  # density of sulfate kg/m^3
 vi = (4/3)(pi*(ri**3))*np.exp((9/2)(np.log(sig))**2)
 ni = xi/(ros*vi)  # number density of sulfate 
 # -------------------------------------------------------------------------
