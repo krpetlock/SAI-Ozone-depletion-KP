@@ -76,11 +76,12 @@ vNAT = (4/3)*pi*rad**3  # volume of representative NAT particle (um^3)
 vdN = vNAT*ndN*1e-12   # volume density of NAT (cm^3/cm^3 air)
 dNAT = ((dna + (dH2O*3))/4)  # liquid density of NAT (g/cm^3)
 dNTa = vdN * dNAT      # density of NAT in air (g NAT/cm^3 air)
+dNT20 = (dNTa)e-6 /(da20)e-6
 blae = dNTa            # baseline aerosol (density of NAT in air)
 #-------------------------------------------------------------------------
 
 # calculate baseline O3 depletion vs start date (without SAI): 
-def odb(x, y = blae):
+def odb(x, y = dNT20):
    return ((c+(dc*x))*y)*k*2*dac/gmo
 a = tts
 for wt in (tts):
@@ -200,7 +201,7 @@ d45rdu = np.around(d45du, 2)
 
 # list of dO3 for 1 yr step successive future SAI start times (molec m^-3)
 
-def odp(x, y = mds):
+def odp(x, y = ni):
    return (((c+(dc*x))/gmcl)*y)*k*2*dac
 a = tts
 for wt in tts:
