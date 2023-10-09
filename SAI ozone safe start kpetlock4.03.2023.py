@@ -80,17 +80,18 @@ dNT20 = ((dNTa)e-3)/((da20)e-6)  #density of NAT in air (kg NAT/kg air) at 20 km
 blae = dNTa            # baseline aerosol (density of NAT in air)
 #-------------------------------------------------------------------------
 
-# calculate number density of baseline aerosol (as NAT) in mid stratosphere:
+# number density of baseline aerosol (as NAT) in mid stratosphere:
 sig = 1.6  # geometric standard deviation for Aitkin and Accumulation mode, from CESM2
 rib = 0.6e-6  # avg particle radius (m) for size distribution (bin?)
 xib = dNT20  # mixing ratio (kg NAT/kg air) at 20 km
 ros = 1770  # density of sulfate kg/m^3
 vib = (4/3)(pi*(rib**3))*np.exp((9/2)(np.log(sig))**2)
 nib = xib/(ros*vib)  # number density of sulfate 
+bNAT = 5e-4  # from Weimer et al (2023)  
 #-------------------------------------------------------------------------
 
-# calculate baseline O3 depletion vs start date (without SAI): 
-def odb(x, y = nib):
+# calculate baseline O3 depletion without SAI: 
+def odb(x, y = bNAT):
    return (((c+(dc*x))/gmcl)*y)*k*2*dac/gmo
 a = tts
 for wt in (tts):
