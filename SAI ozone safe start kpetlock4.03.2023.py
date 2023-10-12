@@ -23,7 +23,7 @@ ndN = 5e-4     # Antarctic (surface measured) NAT (number density cm^-3), Sept-O
 dna = 1.5      # approx density of nitric acid HNO3 g/cm^3
 dH2O = 1.0     # density of H2O g/cm^3
 #--------------------------------------------------------------------------
-
+t0 = 1
 # remaining Cl (as ratio) in atm at time (t) yrs in future from 2023
 clrt = (prm.clp_noaa + (prm.dcl * t0))/1e12
 # -------------------------------------------------------------------------
@@ -76,7 +76,7 @@ vNAT = (4/3)*pi*rad**3  # volume of representative NAT particle (um^3)
 vdN = vNAT*ndN*1e-12   # volume density of NAT (cm^3/cm^3 air)
 dNAT = ((dna + (dH2O*3))/4)  # liquid density of NAT (g/cm^3)
 dNTa = vdN * dNAT      # density of NAT in air (g NAT/cm^3 air)
-dNT20 = ((dNTa)e-3)/((da20)e-6)  #density of NAT in air (kg NAT/kg air) at 20 km altitude
+dNT20 = ((dNTa)*1e-3)/((da20)*1e-6)  #density of NAT in air (kg NAT/kg air) at 20 km altitude
 blae = dNTa            # baseline aerosol (density of NAT in air)
 #-------------------------------------------------------------------------
 
@@ -85,17 +85,23 @@ sig = 1.6  # geometric standard deviation for Aitkin and Accumulation mode, from
 rib = 0.6e-6  # avg particle radius (m) for size distribution (bin?)
 xib = dNT20  # mixing ratio (kg NAT/kg air) at 20 km
 ros = 1770  # density of sulfate kg/m^3
-vib = (4/3)(pi*(rib**3))*np.exp((9/2)(np.log(sig))**2)
+vib = (4/3)*(pi*(rib**3))*np.exp((9/2)*(np.log(sig))**2)
 nib = xib/(ros*vib)  # number density of sulfate 
 bNAT = 5e-4  # from Weimer et al (2023)  
+
+tts = np.linspace(1,prm.year_e-prm.year_b+1,prm.year_e-prm.year_b+1)
+sty = tts+prm.year_b-1
+tse = np.array([0,2,7,12,17,22,27,32,37,42])   # yrs from 2023, five yr steps after 2025, extended to 2065
+
+
 #-------------------------------------------------------------------------
 
 # calculate baseline O3 depletion without SAI: 
-def odb(x, y = bNAT):
-   return (((c+(dc*x))/gmcl)*y)*k*2*dac/gmo
-a = tts
-for wt in (tts):
-    dObt = odb(a)
+#def odb(x, y = bNAT):
+#   return (((c+(dc*x))/gmcl)*y)*k*2*dac/gmo
+#a = tts
+#for wt in (tts):
+#    dObt = odb(a)
 #-------------------------------------------------------------------------
 
 # calculate mass density of sulfate aerosol to add to Antarctic mid stratosphere for 1 K surface cooling, in g/cm^3 :
@@ -119,7 +125,7 @@ dae_A2 = dae_A2 * 1e-6 * 1e-6
 # calculate number density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling, in 
 ri = 0.6e-6  # avg particle radius (m) for size distribution (bin?)
 xi = 0.2e-7  # mixing ratio (kg SO4/kg air)
-vi = (4/3)(pi*(ri**3))*np.exp((9/2)(np.log(sig))**2)
+vi = (4/3)*(pi*(ri**3))*np.exp((9/2)*(np.log(sig))**2)
 ni = xi/(ros*vi)  # number density of sulfate 
 # -------------------------------------------------------------------------
 
@@ -171,24 +177,21 @@ print('')
 # ---------------------------------------------------------------------------
 
 # # calculate ozone depletion resulting from addition of new aerosol in SAI 1K cooling scenario, variable start times
-tts = np.linspace(1,prm.year_e-prm.year_b+1,prm.year_e-prm.year_b+1)
-sty = tts+prm.year_b-1
-tse = np.array([0,2,7,12,17,22,27,32,37,42])   # yrs from 2023, five yr steps after 2025, extended to 2065
 
 dO23 = -((c+(dc * t0)) * daec)*k*2  #a ozone depletion from (R1), 2023 SAI start (tts= 0) for 1K surface cooling, g cm^-3 s^-1
-dO35 = -((c+(dc * t3)) * daec)*k*2  # ozone depletion from (R1), 2035 SAI start (tts=12) for 1K surface cooling, g cm^-3 s^-1
-dO45 = -((c+(dc * t5)) * daec)*k*2  # ozone depletion from (R1), 2045 SAI start (tts=22) for 1K surface cooling, g cm^-3 s^-1
+#dO35 = -((c+(dc * t3)) * daec)*k*2  # ozone depletion from (R1), 2035 SAI start (tts=12) for 1K surface cooling, g cm^-3 s^-1
+#dO45 = -((c+(dc * t5)) * daec)*k*2  # ozone depletion from (R1), 2045 SAI start (tts=22) for 1K surface cooling, g cm^-3 s^-1
 
 d23m = dO23/gmo  # ozone depletion from reaction R1 (2023 SAI start) in molec/cm^3 
-d35m = dO35/gmo  # ozone depletion from reaction R1 (2035 SAI start) in molec/cm^3 
-d45m = dO45/gmo  # ozone depletion from reaction R1 (2045 SAI start) in molec/cm^3 
+#d35m = dO35/gmo  # ozone depletion from reaction R1 (2035 SAI start) in molec/cm^3 
+#d45m = dO45/gmo  # ozone depletion from reaction R1 (2045 SAI start) in molec/cm^3 
 
 d23s = d23m*dac  # ozone depletion (surface air equivalent) from R1 (2023 start) molec/cm^3, at STP
 d23sr = np.around(d23s, 2)  # rounded to 2 decimal places
-d35s = d35m*dac  # ozone depletion (surface air equivalent) from R1 (2035 start) molec/cm^3, at STP
-d35sr = np.around(d35s, 2)
-d45s = d45m*dac  # ozone depletion (surface air equivalent) from R1 (2045 start) molec/cm^3, at STP
-d45sr = np.around(d45s, 2)
+#d35s = d35m*dac  # ozone depletion (surface air equivalent) from R1 (2035 start) molec/cm^3, at STP
+#d35sr = np.around(d35s, 2)
+#d45s = d45m*dac  # ozone depletion (surface air equivalent) from R1 (2045 start) molec/cm^3, at STP
+#d45sr = np.around(d45s, 2)
 
 # d23l = -((c+(dc * t0)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2023 start) molec/cm^3, at STP, variable SAD & k
 # d25l = -((c+(dc * t1)) * daec)*ksl*2*dac/gmo  # ozone depletion (surface air eq) from R1 (2025 start) molec/cm^3, at STP, variable SAD & k
@@ -201,10 +204,10 @@ d45sr = np.around(d45s, 2)
 #  calculate stratospheric column ozone depletion in Dobson Units (DU)
 d23du = (d23m*7000)/du  # O3 depletion from R1 (2023 start) in Dobson Units (using mid-strat column from 18-25 km)
 d23rdu = np.around(d23du, 2)
-d35du = (d35m*7000)/du  # O3 depletion from R1 (2035 start) in Dobson Units   "       "        "           "
-d35rdu = np.around(d35du, 2)
-d45du = (d45m*7000)/du  # O3 depletion from R1 (2045 start) in Dobson Units   "       "        "           "
-d45rdu = np.around(d45du, 2)
+#d35du = (d35m*7000)/du  # O3 depletion from R1 (2035 start) in Dobson Units   "       "        "           "
+#d35rdu = np.around(d35du, 2)
+#d45du = (d45m*7000)/du  # O3 depletion from R1 (2045 start) in Dobson Units   "       "        "           "
+#d45rdu = np.around(d45du, 2)
 # --------------------------------------------------------------------------------------------------------
 
 # list of dO3 for 1 yr step successive future SAI start times (molec m^-3)
