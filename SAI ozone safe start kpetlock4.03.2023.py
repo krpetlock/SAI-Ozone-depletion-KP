@@ -90,18 +90,17 @@ nib = xib/(ros*vib)  # number density of sulfate
 bNAT = 5e-4  # from Weimer et al (2023)  
 
 tts = np.linspace(1,prm.year_e-prm.year_b+1,prm.year_e-prm.year_b+1)
-sty = tts+prm.year_b-1
-tse = np.array([0,2,7,12,17,22,27,32,37,42])   # yrs from 2023, five yr steps after 2025, extended to 2065
-
+sty = tts+prm.year_b-1  # potential start year
+tse = np.array([0,2,7,12,17,22,27,32,37,42])  # yrs from 2023, five yr steps after 2025, extended to 2065
 
 #-------------------------------------------------------------------------
 
 # calculate baseline O3 depletion without SAI: 
-#def odb(x, y = bNAT):
-#   return (((c+(dc*x))/gmcl)*y)*k*2*dac/gmo
-#a = tts
-#for wt in (tts):
-#    dObt = odb(a)
+# def odb(x, y = bNAT):
+# return (((c+(dc*x))/gmcl)*y)*k*2*dac/gmo
+# a = tts
+# for wt in (tts):
+# dObt = odb(a)
 #-------------------------------------------------------------------------
 
 # calculate mass density of sulfate aerosol to add to Antarctic mid stratosphere for 1 K surface cooling, in g/cm^3 :
@@ -122,11 +121,11 @@ dae_A2 = prm.dae_A[2]*da20
 dae_A2 = dae_A2 * 1e-6 * 1e-6
 # -------------------------------------------------------------------------
 
-# calculate number density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling, in 
+# calculate number density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling:
 ri = 0.6e-6  # avg particle radius (m) for size distribution (bin?)
 xi = 0.2e-7  # mixing ratio (kg SO4/kg air)
 vi = (4/3)*(pi*(ri**3))*np.exp((9/2)*(np.log(sig))**2)
-ni = xi/(ros*vi)  # number density of sulfate 
+ni = xi/(ros*vi)  # number density of additional mid-stratospheric sulfate needed for 1 K surface cooling 
 # -------------------------------------------------------------------------
 
 # calculate heterogeneous reaction rate for R1:
