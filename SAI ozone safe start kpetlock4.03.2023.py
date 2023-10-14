@@ -62,9 +62,9 @@ h18 = r18-(r18*sin60)
 vlc = (2/3)*(pi*((r25)**2)*h25)  # volume of larger cone (60-90s), Re + 25 km
 vsc = (2/3)*(pi*((r18)**2)*h18)  # volume of smaller cone (60-90s), Re + 18 km 
 vams = vlc - vsc      # volume of Antarctic mid strat 18-25 km altitude (60-90s) (km^3)
-vamsm = (vams)*10**9  # volume of Antarctic mid strat 18-25 km altitude (60-90s) (m^3)
+vamsm = (vams)*10**9 # volume of Antarctic mid strat 18-25 km altitude (60-90s) (m^3)
 
-#  global mid-stratosphere volume:
+#  calculate volume of global mid-stratosphere (18-25 km):
 #  vol25 = (4.0/3.0)*pi*r25**3.0  # volume of sphere of radius, earth + 25 km altitude
 #  vol18 = (4.0/3.0)*pi*r18**3.0  # volume of sphere of radius, earth + 18 km altitude
 #  vmsk = vol25 - vol18  # volume of mid stratosphere (km^3) from 18 to 25 km altitude
