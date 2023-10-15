@@ -22,6 +22,7 @@ rad = 0.05     # approx radius (um) of Antacrtic spring NAT aerosol, Fiebig et a
 ndN = 5e-4     # Antarctic (surface measured) NAT (number density cm^-3), Sept-Oct, Weimer et al, (2022) 
 dna = 1.5      # approx density of nitric acid HNO3 g/cm^3
 dH2O = 1.0     # density of H2O g/cm^3
+gms = mms/an   # molecular mass of sulfate (g/molec)
 #--------------------------------------------------------------------------
 t0 = 1
 # remaining Cl (as ratio) in atm at time (t) yrs in future from 2023
@@ -32,19 +33,19 @@ clrt = (prm.clp_noaa + (prm.dcl * t0))/1e12
 dac = das/da20   # air density conversion factor from 20 km tao surface air equivalent
 gma = mma/an     # g/molec air
 gmo = mmo/an     # g/molec ozone
-gmcl = mmcl/an   # g/molec Cl
 kma = gma/1000   # kg/molec air
 kmo = (gmo/1000) # kg/molec ozone
 ma20 = da20/kma  # molec air / m^3 at 20 km
 # -------------------------------------------------------------------------
 
 # calculate density of Cl in g/cm^3
+gmcl = mmcl/an   # g/molec Cl
 mc20 = ma20 * prm.clr  # Cl molec/m^3 at 20 km
-mc20c = mc20*10**-6  # Cl molec/cm^3 at 20km
+mc20c = mc20*10**-6     # Cl molec/cm^3 at 20km
 dmc20 = ma20 * prm.dclr  # annual change in Cl molec/m^3 at 20km
 dmc20c = (dmc20)*10**-6  # annual change in Cl molec/cm^3 at 20km
-c20 = mc20c * gmcl  # Cl (g/cm^3) at 20 km
-dc20 = dmc20c * gmcl  # annual change in Cl (g/cm^3) at 20km
+c20 = mc20c * gmcl       # Cl (g/cm^3) at 20 km
+dc20 = dmc20c * gmcl     # annual change in Cl (g/cm^3) at 20km
 print(c20)
 c = c20
 dc = dc20
@@ -76,7 +77,7 @@ vNAT = (4/3)*pi*rad**3  # volume of representative NAT particle (um^3)
 vdN = vNAT*ndN*1e-12   # volume density of NAT (cm^3/cm^3 air)
 dNAT = ((dna + (dH2O*3))/4)  # liquid density of NAT (g/cm^3)
 dNTa = vdN * dNAT      # density of NAT in air (g NAT/cm^3 air)
-dNT20 = ((dNTa)*1e-3)/((da20)*1e-6)  #density of NAT in air (kg NAT/kg air) at 20 km altitude
+dNT20 = ((dNTa)*1e-3)/((da20)*1e-6)  #density of NAT in air (cm^3 NAT/cm^3 air) at 20 km altitude
 blae = dNTa            # baseline aerosol (density of NAT in air)
 #-------------------------------------------------------------------------
 
@@ -95,9 +96,9 @@ tse = np.array([0,2,7,12,17,22,27,32,37,42])  # yrs from 2023, five yr steps aft
 
 #-------------------------------------------------------------------------
 
-# calculate baseline O3 depletion without SAI: 
+calculate baseline O3 depletion without SAI: 
 # def odb(x, y = bNAT):
-# return (((c+(dc*x))/gmcl)*y)*k*2*dac/gmo
+# return (((c+(dc*x))/gmcl)*y)*k*2*dac
 # a = tts
 # for wt in (tts):
 # dObt = odb(a)
@@ -117,11 +118,12 @@ gms = mms/an  # molecular mass of sulfate (g/molec)
 mds = daec/gms  # molecular density of added sulfate (molec/cm^3) at 20km (aproxmated from 18-25km altitude)
 
 # calculate mass density of SO4 from CESM values (ARISE), take year 2 as test
-dae_A2 = prm.dae_A[2]*da20 
-dae_A2 = dae_A2 * 1e-6 * 1e-6
+# dae_A2 = prm.dae_A[2]*da20 
+# dae_A2 = dae_A2 * 1e-6 * 1e-6
 # -------------------------------------------------------------------------
 
 # calculate number density of sulfate aerosol to add to mid stratosphere for 1 K surface cooling:
+sig = 1.6    # geometric standard deviation for Aitkin and Accumulation mode, from CESM2
 ri = 0.6e-6  # avg particle radius (m) for size distribution (bin?)
 xi = 0.2e-7  # mixing ratio (kg SO4/kg air)
 vi = (4/3)*(pi*(ri**3))*np.exp((9/2)*(np.log(sig))**2)
