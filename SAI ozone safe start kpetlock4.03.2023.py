@@ -177,9 +177,9 @@ print('')
 
 # # calculate ozone depletion resulting from addition of new aerosol in SAI 1K cooling scenario, variable start times
 
-dO23 = -((c+(dc * t0))/gmcl * ni)*k*2  #a ozone depletion from (R1), 2023 SAI start (tts= 0) for 1K surface cooling, g cm^-3 s^-1
-#dO35 = -((c+(dc * t3))/gmcl * ni)*k*2  # ozone depletion from (R1), 2035 SAI start (tts=12) for 1K surface cooling, g cm^-3 s^-1
-#dO45 = -((c+(dc * t5))/gmcl * ni)*k*2  # ozone depletion from (R1), 2045 SAI start (tts=22) for 1K surface cooling, g cm^-3 s^-1
+dO23 = -(((c+(dc * t0))/gmcl) * ni)*k*2   # ozone depletion from (R1), 2023 SAI start (tts= 0) for 1K surface cooling, g cm^-3 s^-1
+#dO35 = -(((c+(dc * t3))/gmcl) * ni)*k*2  # ozone depletion from (R1), 2035 SAI start (tts=12) for 1K surface cooling, g cm^-3 s^-1
+#dO45 = -(((c+(dc * t5))/gmcl) * ni)*k*2  # ozone depletion from (R1), 2045 SAI start (tts=22) for 1K surface cooling, g cm^-3 s^-1
 
 d23m = dO23   # ozone depletion from reaction R1 (2023 SAI start) in molec/cm^3 
 #d35m = dO35  # ozone depletion from reaction R1 (2035 SAI start) in molec/cm^3 
@@ -192,12 +192,12 @@ d23sr = np.around(d23s, 2)  # rounded to 2 decimal places
 #d45s = d45m*dac  # ozone depletion (surface air equivalent) from R1 (2045 start) molec/cm^3, at STP
 #d45sr = np.around(d45s, 2)
 
-# d23l = -((c+(dc * t0))/gmcl * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2023 start) molec/cm^3, at STP, variable SAD & k
-# d25l = -((c+(dc * t1))/gmcl * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2025 start) molec/cm^3, at STP, variable SAD & k
-# d30l = -((c+(dc * t2))/gmcl * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2030 start) molec/cm^3, at STP, variable SAD & k
-# d35l = -((c+(dc * t3))/gmcl * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2035 start) molec/cm^3, at STP, variable SAD & k
-# d40l = -((c+(dc * t4))/gmcl * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2040 start) molec/cm^3, at STP, variable SAD & k
-# d45l = -((c+(dc * t5))/gmcl * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2045 start) molec/cm^3, at STP, variable SAD & k
+# d23l = -(((c+(dc * t0))/gmcl) * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2023 start) molec/cm^3, at STP, variable SAD & k
+# d25l = -(((c+(dc * t1))/gmcl) * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2025 start) molec/cm^3, at STP, variable SAD & k
+# d30l = -(((c+(dc * t2))/gmcl) * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2030 start) molec/cm^3, at STP, variable SAD & k
+# d35l = -(((c+(dc * t3))/gmcl) * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2035 start) molec/cm^3, at STP, variable SAD & k
+# d40l = -(((c+(dc * t4))/gmcl) * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2040 start) molec/cm^3, at STP, variable SAD & k
+# d45l = -(((c+(dc * t5))/gmcl) * ni)*ksl*2*dac  # ozone depletion (surface air eq) from R1 (2045 start) molec/cm^3, at STP, variable SAD & k
 # --------------------------------------------------------------------------------------------------------
 
 #  calculate stratospheric column ozone depletion in Dobson Units (DU)
@@ -216,7 +216,6 @@ def odp(x, y = ni):
 a = tts
 for wt in tts:
     dO3t = odp(a)
-
 
 # print outputs with string ('words.......') labels
 
