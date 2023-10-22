@@ -22,7 +22,6 @@ rad = 0.05     # approx radius (um) of Antacrtic spring NAT aerosol, Fiebig et a
 ndN = 5e-4     # Antarctic (surface measured) NAT (number density cm^-3), Sept-Oct, Weimer et al, (2022) 
 dna = 1.5      # approx density of nitric acid HNO3 g/cm^3
 dH2O = 1.0     # density of H2O g/cm^3
-gms = mms/an   # molecular mass of sulfate (g/molec)
 #--------------------------------------------------------------------------
 t0 = 1
 # remaining Cl (as ratio) in atm at time (t) yrs in future from 2023
