@@ -1,0 +1,4 @@
+ine 90:  changed bNAT to 5e-4 (from Weimer et al, 2023)
+line 108: changed 'dela' to 32 Tg/yr  to be commensurate with the SO2 input level in the 2022 WMO report scenario
+line 110: activated the calculation of 'daec' (instead of the column data calculation on lines 112 and 113)
+line 181: changed ni to daec (mass density of SO2, per your previous recommendation)
